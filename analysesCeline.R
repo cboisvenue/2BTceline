@@ -57,3 +57,12 @@ pctForested[, .(ecozone, year, pctFor = ((forest/totalPix)*100))]
 setkeyv(plotData2, keyCols)
 pctAllWood <- merge.data.table(plotData2, pctForested)
 pctAllWood[, .(ecozone, year, pctWood = (((forest+woodland)/totalPix)*100))]
+
+# plot percent forested over time by ecozones
+plotPctWood <-
+  ggplot(pctAllWood[, .(ecozone, year, pctWood = (((forest+woodland)/totalPix)*100))],
+         aes(x = year, y = pctWood))
+plotPctWood + geom_line(aes(group = ecozone, color = ecozone), linewidth = 1.5)
+plotPctFor <- ggplot(pctForested[, .(ecozone, year, pctFor = ((forest/totalPix)*100))],
+                     aes(x = year, y = pctFor))
+plotPctFor + geom_line(aes(group = ecozone, color = ecozone), linewidth = 1.5)
